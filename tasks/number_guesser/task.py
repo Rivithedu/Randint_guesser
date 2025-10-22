@@ -3,7 +3,7 @@ import random, time, math, msvcrt, sys
 from contextlib import nullcontext
 
 print("Welcome to Number Guesser")
-print("\nMade by, Rivith Uyangoda")
+print("Made by, Rivith Uyangoda")
 
 def countdown(t):
     while t:
