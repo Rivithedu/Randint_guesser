@@ -49,7 +49,7 @@ def get_name():
     return name
 
 
-def show_past_games(callback):
+def show_past_games(player):
     try:
         with open("data.txt", "r") as file:
             lines = file.readlines()
@@ -62,13 +62,14 @@ def show_past_games(callback):
                 if len(parts) != 6:
                     continue
                 name, diff, result, num, time_used, guesses = parts
-                print(
+                if name == player:
+                    print(
                     f"Name - {name} | Difficulty - {diff} | Win/Lose - {result} | Number - {num} | Time - {time_used}s | Guesses - {guesses}")
     except FileNotFoundError:
         print("\n No past games found.")
 
 
-def readline():
+def readline(player):
     best_scores = {}  # {name: {difficulty: (percent_used, time_used, line)}}
 
     try:
@@ -79,7 +80,8 @@ def readline():
                     continue
 
                 name, diff, result, num, time_used, guesses = parts
-
+                if name != player:
+                    continue
                 try:
                     used, total = guesses.split("/")
                     used, total = int(used), int(total)
@@ -129,8 +131,65 @@ def num_creator(g_min, g_max, range_min, range_max):
     print(f"\nYour random number range is: {first_num} - {second_num}")
     print(f"\nYou have {guesses} guesses.")
     return guesses, first_num, second_num
-
-
+def singleplayer(player):
+    difficulty = input("\nPick a difficulty \nE=Easy \nM=Medium \nH=Hard \nI=Insane \n\n").strip().capitalize()
+    if difficulty in ["E", "Easy", "1", "e"]:
+        guesses, first_num, second_num = num_creator(13, 17, 100, 1000)
+        t = 60
+    elif difficulty in ["M", "Medium", "2", 'm']:
+        guesses, first_num, second_num = num_creator(8, 12, 500, 10000)
+        t = 70
+    elif difficulty in ["H", "Hard", "3", 'h']:
+        guesses, first_num, second_num = num_creator(5, 9, 1500, 100000)
+        t = 90
+    elif difficulty in ["I", "Insane", "4", 'i']:
+        guesses, first_num, second_num = num_creator(3, 5, 10000, 10 ** 18)
+        t = 40
+    else:
+        print("\nInvalid difficulty")
+        return
+    number = random.randint(first_num, second_num)
+    start_time = time.perf_counter()
+    print(f"\nAlright {player}, start guessing!")
+    total_guesses = guesses
+    while guesses > 0:
+        elapsed = time.perf_counter() - start_time
+        remaining = int(t - elapsed)
+        if remaining <= 0:
+            print("\n⏰ Time’s up! You ran out of time!")
+            break
+        print(f"\nGuesses left: {guesses} | Time left: {remaining}s | Range {first_num} - {second_num}")
+        guess = input("\nGuess a number: ")
+        elapsed = time.perf_counter() - start_time
+        if elapsed >= t:
+            print("\n⏰ Time’s up! You ran out of time!")
+            print(f"\nYou lost! The number was {number}.")
+            break
+        if guess == '2010':
+            print(f"\nThe number was {number}.")
+        if not guess.isdigit() or not (first_num <= int(guess) <= second_num):
+            print("\nPlease enter a valid number.")
+            continue
+        guess = int(guess)
+        guesses -= 1
+        if guess == number:
+            end_time = time.perf_counter()
+            elapsed_time = end_time - start_time
+            save_round_data(player, difficulty, "Win", number, elapsed_time, total_guesses - guesses, total_guesses)
+            print(f"\n✅ Correct! You got it in {elapsed_time:.2f} seconds.")
+            break
+        elif guess > number:
+            print(f"\nToo high!")
+        elif guess < number:
+            print(f"\nToo low!")
+    else:
+        print(f"\nYou lost! The number was {number}.")
+    end_time = time.perf_counter()
+    print(f"\nElapsed time: {end_time - start_time:.2f} seconds")
+    elapsed_time = end_time - start_time
+    save_round_data(player, difficulty, "Lose", number, elapsed_time, total_guesses, total_guesses)
+    readline(player)
+    time.sleep(1.5)
 def main():
     player = get_name()
     play_again = "null"
@@ -138,69 +197,12 @@ def main():
     while True:
         choice = input("\nType '1' to Play, '2' to View Past Games, or anything else to Quit: ").strip()
         if choice == "2":
-            show_past_games()
+            show_past_games(player)
             continue
         elif choice != "1":
             print("\nGoodbye!")
             return
-        difficulty = input("\nPick a difficulty \nE=Easy \nM=Medium \nH=Hard \nI=Insane \n\n").strip().capitalize()
-        if difficulty in ["E", "Easy", "1", "e"]:
-            guesses, first_num, second_num = num_creator(13, 17, 100, 1000)
-            t = 60
-        elif difficulty in ["M", "Medium", "2", 'm']:
-            guesses, first_num, second_num = num_creator(8, 12, 500, 10000)
-            t = 70
-        elif difficulty in ["H", "Hard", "3", 'h']:
-            guesses, first_num, second_num = num_creator(5, 9, 1500, 100000)
-            t = 90
-        elif difficulty in ["I", "Insane", "4", 'i']:
-            guesses, first_num, second_num = num_creator(3, 5, 10000, 10 ** 18)
-            t = 40
-        else:
-            print("\nInvalid difficulty")
-            return
-        number = random.randint(first_num, second_num)
-        start_time = time.perf_counter()
-        print(f"\nAlright {player}, start guessing!")
-        total_guesses = guesses
-        while guesses > 0:
-            elapsed = time.perf_counter() - start_time
-            remaining = int(t - elapsed)
-            if remaining <= 0:
-                print("\n⏰ Time’s up! You ran out of time!")
-                break
-            print(f"\nGuesses left: {guesses} | Time left: {remaining}s | Range {first_num} - {second_num}")
-            guess = input("\nGuess a number: ")
-            elapsed = time.perf_counter() - start_time
-            if elapsed >= t:
-                print("\n⏰ Time’s up! You ran out of time!")
-                print(f"\nYou lost! The number was {number}.")
-                break
-            if guess == '2010':
-                print(f"\nThe number was {number}.")
-            if not guess.isdigit() or not (first_num <= int(guess) <= second_num):
-                print("\nPlease enter a valid number.")
-                continue
-            guess = int(guess)
-            guesses -= 1
-            if guess == number:
-                end_time = time.perf_counter()
-                elapsed_time = end_time - start_time
-                save_round_data(player, difficulty, "Win", number, elapsed_time, total_guesses - guesses, total_guesses)
-                print(f"\n✅ Correct! You got it in {elapsed_time:.2f} seconds.")
-                break
-            elif guess > number:
-                print(f"\nToo high!")
-            elif guess < number:
-                print(f"\nToo low!")
-        else:
-            print(f"\nYou lost! The number was {number}.")
-        end_time = time.perf_counter()
-        print(f"\nElapsed time: {end_time - start_time:.2f} seconds")
-        elapsed_time = end_time - start_time
-        save_round_data(player, difficulty, "Lose", number, elapsed_time, total_guesses, total_guesses)
-        readline()
-        time.sleep(1.5)
+        singleplayer(player)
         play_again = input("\nPress Enter to play again or type anything else (and enter) to quit: ")
         if play_again == "":
             continue

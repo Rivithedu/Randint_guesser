@@ -38,6 +38,12 @@ files:
   - name: runConfigurations/Unittests in number_guesser.run.xml
     visible: false
     learner_created: false
+  - name: names.txt
+    visible: true
+    learner_created: true
+  - name: data.txt
+    visible: true
+    learner_created: true
 status: Unchecked
 record: -1
 solution_hidden: true
