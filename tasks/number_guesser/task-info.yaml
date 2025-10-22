@@ -1,0 +1,43 @@
+type: edu
+files:
+  - name: task.py
+    visible: true
+    placeholders:
+      - offset: 0
+        length: 0
+        placeholder_text: "# TODO create a number guessing game that runs through the\
+      \ main() function"
+        initial_state:
+          length: 74
+          offset: 0
+        initialized_from_dependency: false
+        encrypted_possible_answer: 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
+        selected: false
+        status: Unchecked
+        is_visible: false
+    learner_created: false
+  - name: __init__.py
+    visible: false
+    learner_created: false
+  - name: tests/__init__.py
+    visible: false
+    learner_created: false
+  - name: tests/test_task.py
+    visible: false
+    learner_created: false
+  - name: invisible_task.py_output.png
+    visible: false
+    is_binary: true
+    learner_created: false
+  - name: tests/output.txt
+    visible: false
+    learner_created: false
+  - name: output.txt
+    visible: false
+    learner_created: false
+  - name: runConfigurations/Unittests in number_guesser.run.xml
+    visible: false
+    learner_created: false
+status: Unchecked
+record: -1
+solution_hidden: true

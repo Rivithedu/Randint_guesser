@@ -1,0 +1,206 @@
+                                 H A N G M A N
+                       Enter your name: jon
+                        Hello Jon. Guess the secret word
+                                      +---+
+                                          |
+                                          |
+                                          |
+                                         ===
+                                Wrong guesses:
+
+                                     _ _ _
+                        Guess a letter: a
+
+                                      +---+
+                                      O   |
+                                          |
+                                          |
+                                         ===
+                               Wrong guesses: a
+
+                                     _ _ _
+                        Guess a letter: e
+
+                                      +---+
+                                      O   |
+                                      |   |
+                                          |
+                                         ===
+                              Wrong guesses: a e
+
+                                     _ _ _
+                        Guess a letter: u
+
+                                      +---+
+                                      O   |
+                                     /|   |
+                                          |
+                                         ===
+                             Wrong guesses: a e u
+
+                                     _ _ _
+                        Guess a letter: e
+                     You have already guessed that letter.
+                        Guess a letter: o
+
+                                      +---+
+                                      O   |
+                                     /|   |
+                                          |
+                                         ===
+                             Wrong guesses: a e u
+
+                                     _ o _
+                        Guess a letter: d
+
+                                      +---+
+                                      O   |
+                                     /|   |
+                                          |
+                                         ===
+                             Wrong guesses: a e u
+
+                                     d o _
+                        Guess a letter: g
+
+                                      +---+
+                                      O   |
+                                     /|   |
+                                          |
+                                         ===
+                             Wrong guesses: a e u
+
+                                     d o g
+             Congratulations Jon! You figured it out in 6 guesses.
+   Would you like to play again? (y/n): y
+                                 H A N G M A N
+         Alright Jon, let's give this another go. Guess the secret word
+                                      +---+
+                                          |
+                                          |
+                                          |
+                                         ===
+                                Wrong guesses:
+
+                                  _ _ _ _ _ _
+                        Guess a letter: e
+
+                                      +---+
+                                      O   |
+                                          |
+                                          |
+                                         ===
+                               Wrong guesses: e
+
+                                  _ _ _ _ _ _
+                        Guess a letter: o
+
+                                      +---+
+                                      O   |
+                                          |
+                                          |
+                                         ===
+                               Wrong guesses: e
+
+                                  _ _ _ o o _
+                        Guess a letter: b
+
+                                      +---+
+                                      O   |
+                                          |
+                                          |
+                                         ===
+                               Wrong guesses: e
+
+                                  b _ b o o _
+                        Guess a letter: a
+
+                                      +---+
+                                      O   |
+                                          |
+                                          |
+                                         ===
+                               Wrong guesses: e
+
+                                  b a b o o _
+                        Guess a letter: n
+
+                                      +---+
+                                      O   |
+                                          |
+                                          |
+                                         ===
+                               Wrong guesses: e
+
+                                  b a b o o n
+             Congratulations Jon! You figured it out in 5 guesses.
+   Would you like to play again? (y/n): y
+                                 H A N G M A N
+         Alright Jon, let's give this another go. Guess the secret word
+                                      +---+
+                                          |
+                                          |
+                                          |
+                                         ===
+                                Wrong guesses:
+
+                                  _ _ _ _ _ _
+                        Guess a letter: o
+                                      +---+
+                                          |
+                                          |
+                                          |
+                                         ===
+                                Wrong guesses:
+
+                                  _ o _ _ _ _
+                        Guess a letter: e
+                                      +---+
+                                          |
+                                          |
+                                          |
+                                         ===
+                                Wrong guesses:
+
+                                  _ o _ _ e _
+                        Guess a letter: y
+                                      +---+
+                                          |
+                                          |
+                                          |
+                                         ===
+                                Wrong guesses:
+
+                                  _ o _ _ e y
+                        Guess a letter: d
+                                      +---+
+                                          |
+                                          |
+                                          |
+                                         ===
+                                Wrong guesses:
+
+                                  d o _ _ e y
+                        Guess a letter: n
+                                      +---+
+                                          |
+                                          |
+                                          |
+                                         ===
+                                Wrong guesses:
+
+                                  d o n _ e y
+                        Guess a letter: k
+                                      +---+
+                                          |
+                                          |
+                                          |
+                                         ===
+                                Wrong guesses:
+
+                                  d o n k e y
+             Congratulations Jon! You figured it out in 6 guesses.
+   Would you like to play again? (y/n): n
+                          It's been fun Jon. Goodbye!
+
+Process finished with exit code 0
