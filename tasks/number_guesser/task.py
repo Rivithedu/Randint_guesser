@@ -191,7 +191,8 @@ def singleplayer(player):
     readline(player)
     time.sleep(1.5)
 def multiplayer(player):
-        players = {}
+    players = {}
+    while True:
         player_count = input("\nHow many players do you have? ")
 
         if not player_count.isdigit() or int(player_count) <= 0:
@@ -199,25 +200,93 @@ def multiplayer(player):
             continue
 
         player_count = int(player_count)
-
         print(f"\n👥 Setting up {player_count} players...")
 
         for i in range(player_count):
             while True:
                 name = get_name()
-
                 if name in players:
-                    print(f"\n⚠️ The name '{name}' is already taken. Please enter a different name.")
+                    print(f"\n⚠️ The name '{name}' is already used. Please enter a different name.")
                     continue
-
                 players[name] = i + 1
                 print(f"✅ Player {i + 1} registered: {name}")
                 break
+        break
 
-        print("\n✅ All players registered:")
-        for num, name in enumerate(players.keys(), start=1):
-            print(f"  {num}. {name}")
-        while True:
+    # --- Select difficulty ONCE for all players ---
+    while True:
+        difficulty = input("\nPick a difficulty for everyone \nE=Easy \nM=Medium \nH=Hard \nI=Insane \n\n").strip().capitalize()
+        if difficulty in ["E", "Easy", "1", "e", "easy"]:
+            guesses, first_num, second_num = num_creator(13, 17, 100, 1000)
+            t = 60
+        elif difficulty in ["M", "Medium", "2", "m", "medium"]:
+            guesses, first_num, second_num = num_creator(8, 12, 500, 10000)
+            t = 70
+        elif difficulty in ["H", "Hard", "3", "h", "hard"]:
+            guesses, first_num, second_num = num_creator(5, 9, 1500, 100000)
+            t = 90
+        elif difficulty in ["I", "Insane", "4", "i", "insane"]:
+            guesses, first_num, second_num = num_creator(3, 5, 10000, 10 ** 18)
+            t = 40
+        else:
+            print("\nInvalid difficulty")
+            continue
+        break
+
+    print("\n🎮 Let’s begin the multiplayer match!\n")
+
+    # --- Each player takes a turn ---
+    for player in players:
+        print(f"\n▶️ {player}'s turn begins!")
+        number = random.randint(first_num, second_num)
+        total_guesses = guesses
+        start_time = time.perf_counter()
+        remaining = t
+
+        while guesses > 0:
+            elapsed = time.perf_counter() - start_time
+            remaining = int(t - elapsed)
+            if remaining <= 0:
+                print("\n⏰ Time’s up! You ran out of time!")
+                break
+
+            print(f"\n{player} → Guesses left: {guesses} | Time left: {remaining}s | Range: {first_num} - {second_num}")
+            guess = input(f"{player}, enter your guess: ")
+
+            if elapsed >= t:
+                print("\n⏰ Time’s up! You ran out of time!")
+                print(f"You lost! The number was {number}.")
+                break
+
+            if not guess.isdigit() or not (first_num <= int(guess) <= second_num):
+                print("\n❌ Please enter a valid number.")
+                continue
+
+            guess = int(guess)
+            guesses -= 1
+
+            if guess == number:
+                end_time = time.perf_counter()
+                elapsed_time = end_time - start_time
+                save_round_data(player, difficulty, "Win", number, elapsed_time, total_guesses - guesses, total_guesses)
+                print(f"\n✅ {player} guessed correctly in {elapsed_time:.2f}s!")
+                break
+            elif guess > number:
+                print("Too high!")
+            else:
+                print("Too low!")
+        else:
+            print(f"\n{player} lost! The number was {number}.")
+            elapsed_time = time.perf_counter() - start_time
+            save_round_data(player, difficulty, "Lose", number, elapsed_time, total_guesses, total_guesses)
+
+        guesses, _, _ = num_creator(13, 17, 100, 1000)  # reset guesses for next player (can vary by diff)
+        print(f"\n🔹 {player}'s turn is over.")
+        readline(player)
+        time.sleep(1.5)
+
+    print("\n🏁 All players have finished their rounds!")
+
 
 
 
