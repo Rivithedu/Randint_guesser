@@ -191,24 +191,35 @@ def singleplayer(player):
     readline(player)
     time.sleep(1.5)
 def multiplayer(player):
-    while True:
         players = {}
         player_count = input("\nHow many players do you have? ")
 
-        if not player_count.isdigit():
-            print("\nPlease enter a number.")
+        if not player_count.isdigit() or int(player_count) <= 0:
+            print("\n❌ Please enter a valid positive number.")
             continue
 
         player_count = int(player_count)
 
-        for i in range(player_count):
-            name = get_name()
-            players[name] = i + 1
-            print(f"Player {i + 1}: {name}")
+        print(f"\n👥 Setting up {player_count} players...")
 
-        print("\n✅ All players:")
-        for name, num in players.items():
+        for i in range(player_count):
+            while True:
+                name = get_name()
+
+                if name in players:
+                    print(f"\n⚠️ The name '{name}' is already taken. Please enter a different name.")
+                    continue
+
+                players[name] = i + 1
+                print(f"✅ Player {i + 1} registered: {name}")
+                break
+
+        print("\n✅ All players registered:")
+        for num, name in enumerate(players.keys(), start=1):
             print(f"  {num}. {name}")
+        while True:
+
+
 
 
 
