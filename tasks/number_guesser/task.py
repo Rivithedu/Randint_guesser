@@ -133,16 +133,16 @@ def num_creator(g_min, g_max, range_min, range_max):
     return guesses, first_num, second_num
 def singleplayer(player):
     difficulty = input("\nPick a difficulty \nE=Easy \nM=Medium \nH=Hard \nI=Insane \n\n").strip().capitalize()
-    if difficulty in ["E", "Easy", "1", "e"]:
+    if difficulty in ["E", "Easy", "1", "e",'easy']:
         guesses, first_num, second_num = num_creator(13, 17, 100, 1000)
         t = 60
-    elif difficulty in ["M", "Medium", "2", 'm']:
+    elif difficulty in ["M", "Medium", "2", 'm', 'medium']:
         guesses, first_num, second_num = num_creator(8, 12, 500, 10000)
         t = 70
-    elif difficulty in ["H", "Hard", "3", 'h']:
+    elif difficulty in ["H", "Hard", "3", 'h', "hard"]:
         guesses, first_num, second_num = num_creator(5, 9, 1500, 100000)
         t = 90
-    elif difficulty in ["I", "Insane", "4", 'i']:
+    elif difficulty in ["I", "Insane", "4", 'i', "insane"]:
         guesses, first_num, second_num = num_creator(3, 5, 10000, 10 ** 18)
         t = 40
     else:
@@ -190,6 +190,30 @@ def singleplayer(player):
     save_round_data(player, difficulty, "Lose", number, elapsed_time, total_guesses, total_guesses)
     readline(player)
     time.sleep(1.5)
+def multiplayer():
+    while True:
+        players = {}
+        player_count = input("\nHow many players do you have? ")
+
+        if not player_count.isdigit():
+            print("\nPlease enter a number.")
+            continue
+
+        player_count = int(player_count)
+
+        for i in range(player_count):
+            name = get_name()
+            players[name] = i + 1
+            print(f"Player {i + 1}: {name}")
+
+        print("\n✅ All players registered:")
+        for name, num in players.items():
+            print(f"  {num}. {name}")
+        break
+
+
+
+
 def main():
     player = get_name()
     play_again = "null"
@@ -202,7 +226,11 @@ def main():
         elif choice != "1":
             print("\nGoodbye!")
             return
-        singleplayer(player)
+        play_mode = input("1. Singleplayer (S) \n2. Multiplayer (M): ").strip()
+        if play_mode in ["S", "1" , "s","single", "singleplayer", "Singleplayer", "Single", "single player", "Single player"]:
+            singleplayer(player)
+        elif play_mode in ["M", "m", "2"]:
+            multiplayer(player)
         play_again = input("\nPress Enter to play again or type anything else (and enter) to quit: ")
         if play_again == "":
             continue
