@@ -1,3 +1,5 @@
 Rivith,E,Lose,654,21.68,17/17
 test,E,Lose,441,15.08,15/15
 Rivith,E,Lose,313,19.13,17/17
+Rivith,E,Lose,989,19.95,17/17
+test,E,Lose,942,34.71,16/16

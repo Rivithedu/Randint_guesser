@@ -213,7 +213,7 @@ def multiplayer(player):
                 break
         break
 
-    # --- Select difficulty ONCE for all players ---
+    # merge s-played and m-player logic?
     while True:
         difficulty = input("\nPick a difficulty for everyone \nE=Easy \nM=Medium \nH=Hard \nI=Insane \n\n").strip().capitalize()
         if difficulty in ["E", "Easy", "1", "e", "easy"]:
@@ -235,7 +235,7 @@ def multiplayer(player):
 
     print("\n🎮 Let’s begin the multiplayer match!\n")
 
-    # --- Each player takes a turn ---
+    #turns
     for player in players:
         print(f"\n▶️ {player}'s turn begins!")
         number = random.randint(first_num, second_num)
@@ -281,17 +281,11 @@ def multiplayer(player):
             save_round_data(player, difficulty, "Lose", number, elapsed_time, total_guesses, total_guesses)
 
         guesses, _, _ = num_creator(13, 17, 100, 1000)  # reset guesses for next player (can vary by diff)
-        print(f"\n🔹 {player}'s turn is over.")
+        print(f"\n {player}'s turn is over.")
         readline(player)
         time.sleep(1.5)
 
     print("\n🏁 All players have finished their rounds!")
-
-
-
-
-
-
 
 def main():
     player = get_name()
