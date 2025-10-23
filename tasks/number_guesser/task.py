@@ -190,7 +190,7 @@ def singleplayer(player):
     save_round_data(player, difficulty, "Lose", number, elapsed_time, total_guesses, total_guesses)
     readline(player)
     time.sleep(1.5)
-def multiplayer():
+def multiplayer(player):
     while True:
         players = {}
         player_count = input("\nHow many players do you have? ")
@@ -206,10 +206,9 @@ def multiplayer():
             players[name] = i + 1
             print(f"Player {i + 1}: {name}")
 
-        print("\n✅ All players registered:")
+        print("\n✅ All players:")
         for name, num in players.items():
             print(f"  {num}. {name}")
-        break
 
 
 
