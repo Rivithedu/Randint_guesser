@@ -18,7 +18,8 @@ def countdown(t):
 def save_round_data(name, difficulty, result, number, elapsed_time, guesses_used, total_guesses, game_mode):
     try:
         with open("data.txt", "a") as file:
-            file.write(f"{name},{difficulty},{result},{number},{elapsed_time:.2f},{guesses_used}/{total_guesses}, game_mode\n")
+            file.write(f"{name},{difficulty},{result},{number},{elapsed_time:.2f},{guesses_used}/{total_guesses},{game_mode}\n")
+
     except Exception as e:
         print(f"⚠️ Error saving data: {e}")
 
@@ -36,7 +37,7 @@ def get_name():
             if name == "Rivith":
                 print("\nRivith's name is too long. Try again.")
                 print("\nJk, all system's are up and running (definitely not a print statement).")
-            elif name == "Jonathan" or "Derpak":
+            elif name in ["Jonathan", "Derpak"]:
                 print("\nAccess Denied. Please give student A to continue")
                 print("\nJK (but please do)")
             else:
@@ -63,31 +64,27 @@ def show_past_games(player):
             print("\n📜 Game History:")
             for line in lines:
                 parts = line.strip().split(",")
-                if len(parts) != 6:
+                if len(parts) != 7:
                     continue
-                name, diff, result, num, time_used, guesses = parts
+                name, diff, result, num, time_used, guesses, game_mode = parts
+
                 if name == player:
                     print(
-                    f"Name - {name} | Difficulty - {diff} | Win/Lose - {result} | Number - {num} | Time - {time_used}s | Guesses - {guesses}")
+                    f"Name - {name} | Difficulty - {diff} | Win/Lose - {result} | Number - {num} | Time - {time_used}s | Guesses - {guesses} | Game Mode - {game_mode}")
     except FileNotFoundError:
         print("\n No past games found.")
-def winner(player):
-    if player == "Rivith":
-        print("\n Rivith wins")
-        winner = "Rivith"
-        return  winner
 
 def readline(player):
-    best_scores = {}  # {name: {difficulty: (percent_used, time_used, line)}}
+    best_scores = {}
 
     try:
         with open("data.txt", "r") as file:
             for line in file:
                 parts = line.strip().split(",")
-                if len(parts) != 6:
+                if len(parts) != 7:
                     continue
 
-                name, diff, result, num, time_used, guesses = parts
+                name, diff, result, num, time_used, guesses, game_mode = parts
                 if name != player:
                     continue
                 try:
@@ -120,8 +117,10 @@ def readline(player):
         for name, diffs in best_scores.items():
             print(f"\n{name}'s Personal Bests:")
             for diff, (p, t, record) in diffs.items():
-                print(f"  {diff}: {record} | Percent of guesses used: {p:.1f}% | Time: {t:.2f}s")
-
+                record_parts = record.split(",")
+                game_mode = record_parts[-1] if len(record_parts) == 7 else "?"
+                print(
+                    f"  {diff}: {record} | Percent of guesses used: {p:.1f}% | Time: {t:.2f}s | Game Mode: {game_mode}")
         return best_scores
 
     except FileNotFoundError:
@@ -242,6 +241,9 @@ def multiplayer(player):
         break
 
     print("\n🎮 Begin!\n")
+    base_guesses = guesses
+    for player in players:
+        guesses = base_guesses
 
     for player in players:
         print(f"\n▶️ {player}'s turn begins!")
@@ -289,7 +291,6 @@ def multiplayer(player):
             save_round_data(player, difficulty, "Lose", number, elapsed_time, total_guesses, total_guesses, "M")
             results.append((player, 1.0, elapsed_time))  # full guesses used if lost
 
-        guesses, _, _ = num_creator(13, 17, 100, 1000)  # reset guesses for next player
         print(f"\n🔹 {player}'s turn is over.")
         time.sleep(1)
 
@@ -326,7 +327,7 @@ def main():
             show_past_games(player)
             continue
         elif choice != "1":
-            print("\nGoodbye!")
+            print("\nGoodbye! \n")
             return
         play_mode = input("1. Singleplayer (S) \n2. Multiplayer (M): ").strip()
         if play_mode in ["S", "1" , "s","single", "singleplayer", "Singleplayer", "Single", "single player", "Single player"]:
