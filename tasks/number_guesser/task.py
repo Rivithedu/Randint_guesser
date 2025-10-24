@@ -203,7 +203,7 @@ def multiplayer(player):
     while True:
         player_count = input("\nHow many players do you have? ")
 
-        if not player_count.isdigit() or int(player_count) <= 0:
+        if not player_count.isdigit() or int(player_count) <= 1:
             print("\n❌ Please enter a valid number.")
             continue
 
@@ -259,7 +259,7 @@ def multiplayer(player):
                 break
 
             print(f"\n{player} → Guesses left: {guesses} | Time left: {remaining}s | Range: {first_num} - {second_num}")
-            guess = input(f"{player}, enter your guess: ")
+            guess = input(f"{player}, enter your guess ({ordinal(total_guesses - guesses + 1)} guess) : ")
 
             if elapsed >= t:
                 print("\n⏰ Time’s up! You ran out of time!")
@@ -289,14 +289,13 @@ def multiplayer(player):
             print(f"\n{player} lost! The number was {number}.")
             elapsed_time = time.perf_counter() - start_time
             save_round_data(player, difficulty, "Lose", number, elapsed_time, total_guesses, total_guesses, "M")
-            results.append((player, 1.0, elapsed_time))  # full guesses used if lost
+            results.append((player, 1.0, elapsed_time))
 
         print(f"\n🔹 {player}'s turn is over.")
         time.sleep(1)
 
     print("\n🏁 All players have finished!\n")
 
-    # sort by fewest guesses ratio, then by time
     results.sort(key=lambda x: (x[1], x[2]))
     winner, win_ratio, win_time = results[0]
 
