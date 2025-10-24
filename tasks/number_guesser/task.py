@@ -15,10 +15,10 @@ def countdown(t):
     return False
 
 
-def save_round_data(name, difficulty, result, number, elapsed_time, guesses_used, total_guesses):
+def save_round_data(name, difficulty, result, number, elapsed_time, guesses_used, total_guesses, game_mode):
     try:
         with open("data.txt", "a") as file:
-            file.write(f"{name},{difficulty},{result},{number},{elapsed_time:.2f},{guesses_used}/{total_guesses}\n")
+            file.write(f"{name},{difficulty},{result},{number},{elapsed_time:.2f},{guesses_used}/{total_guesses}, game_mode\n")
     except Exception as e:
         print(f"⚠️ Error saving data: {e}")
 
@@ -183,7 +183,7 @@ def singleplayer(player):
         if guess == number:
             end_time = time.perf_counter()
             elapsed_time = end_time - start_time
-            save_round_data(player, difficulty, "Win", number, elapsed_time, total_guesses - guesses, total_guesses)
+            save_round_data(player, difficulty, "Win", number, elapsed_time, total_guesses - guesses, total_guesses, "S")
             print(f"\n✅ Correct! You got it in {elapsed_time:.2f} seconds.")
             break
         elif guess > number:
@@ -195,7 +195,7 @@ def singleplayer(player):
     end_time = time.perf_counter()
     print(f"\nElapsed time: {end_time - start_time:.2f} seconds")
     elapsed_time = end_time - start_time
-    save_round_data(player, difficulty, "Lose", number, elapsed_time, total_guesses, total_guesses)
+    save_round_data(player, difficulty, "Lose", number, elapsed_time, total_guesses, total_guesses, "S")
     readline(player)
     time.sleep(1.5)
 def multiplayer(player):
@@ -275,7 +275,7 @@ def multiplayer(player):
                 end_time = time.perf_counter()
                 elapsed_time = end_time - start_time
                 used_ratio = (total_guesses - guesses) / total_guesses
-                save_round_data(player, difficulty, "Win", number, elapsed_time, total_guesses - guesses, total_guesses)
+                save_round_data(player, difficulty, "Win", number, elapsed_time, total_guesses - guesses, total_guesses, "M")
                 print(f"\n✅ {player} guessed correctly in {elapsed_time:.2f}s!")
                 results.append((player, used_ratio, elapsed_time))
                 break
@@ -286,7 +286,7 @@ def multiplayer(player):
         else:
             print(f"\n{player} lost! The number was {number}.")
             elapsed_time = time.perf_counter() - start_time
-            save_round_data(player, difficulty, "Lose", number, elapsed_time, total_guesses, total_guesses)
+            save_round_data(player, difficulty, "Lose", number, elapsed_time, total_guesses, total_guesses, "M")
             results.append((player, 1.0, elapsed_time))  # full guesses used if lost
 
         guesses, _, _ = num_creator(13, 17, 100, 1000)  # reset guesses for next player
