@@ -1,9 +1,8 @@
 # TODO create a number guessing game that runs through the main() function
+#todo winner- multiplayer, and save data round gamemode odrinal - inflect?
 import random, time, math, msvcrt, sys
 from contextlib import nullcontext
 
-print("Welcome to Number Guesser")
-print("\n Made by, Rivith Uyangoda")
 
 def countdown(t):
     while t:
@@ -47,7 +46,12 @@ def get_name():
             file.write(name + '\n')
             print(f"\nNew name '{name}' saved.")
     return name
-
+def ordinal(n):
+    if 11 <= (n % 100) <= 13:
+    suffix = 'th'
+    else:
+    suffix = {1: 'st', 2: 'nd', 3: 'rd'}.get(n % 10, 'th')
+    return str(n) + suffix
 
 def show_past_games(player):
     try:
@@ -67,7 +71,11 @@ def show_past_games(player):
                     f"Name - {name} | Difficulty - {diff} | Win/Lose - {result} | Number - {num} | Time - {time_used}s | Guesses - {guesses}")
     except FileNotFoundError:
         print("\n No past games found.")
-
+def winner(player):
+    if player == "Rivith":
+        print("\n Rivith wins")
+        winner = "Rivith"
+        return  winner
 
 def readline(player):
     best_scores = {}  # {name: {difficulty: (percent_used, time_used, line)}}
@@ -196,7 +204,7 @@ def multiplayer(player):
         player_count = input("\nHow many players do you have? ")
 
         if not player_count.isdigit() or int(player_count) <= 0:
-            print("\n❌ Please enter a valid positive number.")
+            print("\n❌ Please enter a valid number.")
             continue
 
         player_count = int(player_count)
@@ -206,14 +214,13 @@ def multiplayer(player):
             while True:
                 name = get_name()
                 if name in players:
-                    print(f"\n⚠️ The name '{name}' is already used. Please enter a different name.")
+                    print(f"\n ❌ The name '{name}' is already used. Please enter a different name.")
                     continue
                 players[name] = i + 1
                 print(f"✅ Player {i + 1} registered: {name}")
                 break
         break
 
-    # merge s-played and m-player logic?
     while True:
         difficulty = input("\nPick a difficulty for everyone \nE=Easy \nM=Medium \nH=Hard \nI=Insane \n\n").strip().capitalize()
         if difficulty in ["E", "Easy", "1", "e", "easy"]:
@@ -233,9 +240,8 @@ def multiplayer(player):
             continue
         break
 
-    print("\n🎮 Let’s begin the multiplayer match!\n")
+    print("\n🎮 Begin!\n")
 
-    #turns
     for player in players:
         print(f"\n▶️ {player}'s turn begins!")
         number = random.randint(first_num, second_num)
@@ -281,13 +287,21 @@ def multiplayer(player):
             save_round_data(player, difficulty, "Lose", number, elapsed_time, total_guesses, total_guesses)
 
         guesses, _, _ = num_creator(13, 17, 100, 1000)  # reset guesses for next player (can vary by diff)
-        print(f"\n {player}'s turn is over.")
+        print(f"\n🔹 {player}'s turn is over.")
         readline(player)
         time.sleep(1.5)
 
-    print("\n🏁 All players have finished their rounds!")
+    print("\n🏁 All players have finished!")
+
+
+
+
+
+
 
 def main():
+    print("Welcome to Number Guesser")
+    print("\n Made by, Rivith Uyangoda")
     player = get_name()
     play_again = "null"
     callback = False
