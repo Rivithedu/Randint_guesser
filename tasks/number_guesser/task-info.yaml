@@ -44,6 +44,9 @@ files:
   - name: data.txt
     visible: true
     learner_created: true
+  - name: gui.py
+    visible: true
+    learner_created: true
 status: Unchecked
 record: -1
 solution_hidden: true
