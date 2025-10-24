@@ -167,7 +167,7 @@ def singleplayer(player):
             print("\n⏰ Time’s up! You ran out of time!")
             break
         print(f"\nGuesses left: {guesses} | Time left: {remaining}s | Range {first_num} - {second_num}")
-        guess = input("\nGuess a number: ")
+        guess = input(f"\n{player}, Guess a number ({ordinal(total_guesses - guesses + 1)} guess) : ")
         elapsed = time.perf_counter() - start_time
         if elapsed >= t:
             print("\n⏰ Time’s up! You ran out of time!")
@@ -198,8 +198,9 @@ def singleplayer(player):
     save_round_data(player, difficulty, "Lose", number, elapsed_time, total_guesses, total_guesses)
     readline(player)
     time.sleep(1.5)
-def multiplayer(player):
+def multiplayer():
     players = {}
+    results = []
     while True:
         player_count = input("\nHow many players do you have? ")
 
@@ -223,16 +224,16 @@ def multiplayer(player):
 
     while True:
         difficulty = input("\nPick a difficulty for everyone \nE=Easy \nM=Medium \nH=Hard \nI=Insane \n\n").strip().capitalize()
-        if difficulty in ["E", "Easy", "1", "e", "easy"]:
+        if difficulty in ["E", "Easy", "1", "e"]:
             guesses, first_num, second_num = num_creator(13, 17, 100, 1000)
             t = 60
-        elif difficulty in ["M", "Medium", "2", "m", "medium"]:
+        elif difficulty in ["M", "Medium", "2", "m"]:
             guesses, first_num, second_num = num_creator(8, 12, 500, 10000)
             t = 70
-        elif difficulty in ["H", "Hard", "3", "h", "hard"]:
+        elif difficulty in ["H", "Hard", "3", "h"]:
             guesses, first_num, second_num = num_creator(5, 9, 1500, 100000)
             t = 90
-        elif difficulty in ["I", "Insane", "4", "i", "insane"]:
+        elif difficulty in ["I", "Insane", "4", "i"]:
             guesses, first_num, second_num = num_creator(3, 5, 10000, 10 ** 18)
             t = 40
         else:
@@ -247,7 +248,6 @@ def multiplayer(player):
         number = random.randint(first_num, second_num)
         total_guesses = guesses
         start_time = time.perf_counter()
-        remaining = t
 
         while guesses > 0:
             elapsed = time.perf_counter() - start_time
@@ -274,8 +274,10 @@ def multiplayer(player):
             if guess == number:
                 end_time = time.perf_counter()
                 elapsed_time = end_time - start_time
+                used_ratio = (total_guesses - guesses) / total_guesses
                 save_round_data(player, difficulty, "Win", number, elapsed_time, total_guesses - guesses, total_guesses)
                 print(f"\n✅ {player} guessed correctly in {elapsed_time:.2f}s!")
+                results.append((player, used_ratio, elapsed_time))
                 break
             elif guess > number:
                 print("Too high!")
@@ -285,11 +287,24 @@ def multiplayer(player):
             print(f"\n{player} lost! The number was {number}.")
             elapsed_time = time.perf_counter() - start_time
             save_round_data(player, difficulty, "Lose", number, elapsed_time, total_guesses, total_guesses)
+            results.append((player, 1.0, elapsed_time))  # full guesses used if lost
 
-        guesses, _, _ = num_creator(13, 17, 100, 1000)  # reset guesses for next player (can vary by diff)
+        guesses, _, _ = num_creator(13, 17, 100, 1000)  # reset guesses for next player
         print(f"\n🔹 {player}'s turn is over.")
-        readline(player)
-        time.sleep(1.5)
+        time.sleep(1)
+
+    print("\n🏁 All players have finished!\n")
+
+    # sort by fewest guesses ratio, then by time
+    results.sort(key=lambda x: (x[1], x[2]))
+    winner, win_ratio, win_time = results[0]
+
+    print(f"🏆 The winner is {winner} with {win_ratio*100:.1f}% guesses used in {win_time:.2f}s!")
+
+    print("\n📊 Final Results:")
+    for name, ratio, time_used in results:
+        print(f"{name:<10} | {ratio*100:>5.1f}% guesses | {time_used:>6.2f}s")
+
 
     print("\n🏁 All players have finished!")
 
