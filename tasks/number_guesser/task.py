@@ -198,7 +198,7 @@ def singleplayer(player):
     save_round_data(player, difficulty, "Lose", number, elapsed_time, total_guesses, total_guesses)
     readline(player)
     time.sleep(1.5)
-def multiplayer():
+def multiplayer(player):
     players = {}
     results = []
     while True:
