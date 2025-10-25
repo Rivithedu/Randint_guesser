@@ -4,7 +4,7 @@ files:
     visible: true
     placeholders:
       - offset: 0
-        length: 9343
+        length: 9284
         placeholder_text: "# TODO create a number guessing game that runs through the\
       \ main() function"
         initial_state:

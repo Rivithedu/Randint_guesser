@@ -1,5 +1,5 @@
 # TODO create a number guessing game that runs through the main() function
-#todo winner- multiplayer, and save data round gamemode odrinal - inflect?
+#todo password?
 import random, time, math, msvcrt, sys
 from contextlib import nullcontext
 
